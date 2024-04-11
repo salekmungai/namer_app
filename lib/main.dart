@@ -63,9 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (selectedIndex) {
       case 0:
         page = GeneratorPage();
+        // ignore: unnecessary_breaks
         break;
       case 1:
         page = FavoritesPage();
+        // ignore: unnecessary_breaks
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
