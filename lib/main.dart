@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         title: 'Namer App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         ),
         home: MyHomePage(),
       ),
@@ -41,6 +41,11 @@ class MyAppState extends ChangeNotifier {
     } else {
       favorites.add(current);
     }
+    notifyListeners();
+  }
+
+  void deleteFavorite(WordPair pair) {
+    favorites.remove(pair);
     notifyListeners();
   }
 }
@@ -189,19 +194,30 @@ class FavoritesPage extends StatelessWidget {
       );
     }
 
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites:'),
-        ),
-        for (var pair in appState.favorites)
-          ListTile(
+    return ListView.builder(
+      itemCount: appState.favorites.length,
+      itemBuilder: (context, index) {
+        final pair = appState.favorites[index];
+
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 4.0),
+          padding: EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.deepOrange),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: ListTile(
             leading: Icon(Icons.favorite),
             title: Text(pair.asLowerCase),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                appState.deleteFavorite(pair);
+              },
+            ),
           ),
-      ],
+        );
+      },
     );
   }
 }
